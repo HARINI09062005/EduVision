@@ -23,6 +23,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   resize: vertical;
+  overflow: auto; /* ensure native scrollbar appears when content overflows */
   font-family: inherit;
 }
 
@@ -110,7 +111,9 @@
   line-height: 1.5;
   display: none;
   overflow-wrap: break-word;
+  overflow: auto; /* allow overlay content to scroll if needed */
   background: #ffffff; /* force a light background while speaking */
   color: #000000; /* ensure readable text color */
+  z-index: 2;
 }
 .word-span.highlight { background: #fff59d; border-radius: 2px; }

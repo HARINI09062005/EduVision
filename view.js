@@ -5,11 +5,13 @@
 
     const docNameEl = document.getElementById('doc-name');
     const docContentEl = document.getElementById('editor-textarea');
+    const previewEl = document.getElementById('editor-preview');
     const downloadLinkEl = document.getElementById('download-link');
 
     let currentUtterance = null;
     let wordSpans = [];
     let currentHighlighted = null;
+    let scrollSyncHandler = null;
 
     function announceToScreenReader(msg) {
         // Announcements are intentionally silenced in the viewer to avoid
@@ -38,8 +40,9 @@
             if (docNameEl) docNameEl.value = name || '';
 
             if (content) {
-                // show content in the textarea
+                // show content in the textarea and render preview spans for highlighting
                 if (docContentEl) docContentEl.value = content;
+                if (typeof renderContentWithSpans === 'function') renderContentWithSpans(content);
                 downloadLinkEl.innerHTML = '';
             } else if (fileUrl) {
                 if (docContentEl) docContentEl.value = 'Preview not available for this file type.';
@@ -86,16 +89,35 @@
         if (!document.getElementById('view-highlight-style')) {
             const style = document.createElement('style');
             style.id = 'view-highlight-style';
-            style.textContent = '.word-span.highlight{ background: #001a20ff; border-radius: 2px; }';
+            style.textContent = '.word-span.highlight{ background: #fff59d; border-radius: 2px; }';
             document.head.appendChild(style);
         }
 
-        // If the target is a textarea, set the value instead of inserting spans
+        // populate the preview overlay (used for highlighting) and keep textarea value
+        if (previewEl) {
+            previewEl.innerHTML = '';
+            previewEl.appendChild(container);
+            // ensure preview uses same wrapping as textarea
+            previewEl.style.display = 'none';
+            // copy computed textarea styles to the preview so it lines up exactly
+            try {
+                if (docContentEl) {
+                    const cs = window.getComputedStyle(docContentEl);
+                    previewEl.style.fontFamily = cs.fontFamily;
+                    previewEl.style.fontSize = cs.fontSize;
+                    previewEl.style.lineHeight = cs.lineHeight;
+                    previewEl.style.padding = cs.padding;
+                    previewEl.style.borderRadius = cs.borderRadius;
+                    previewEl.style.boxSizing = cs.boxSizing;
+                    previewEl.style.background = cs.backgroundColor || '#fff';
+                    previewEl.style.color = cs.color || '#000';
+                }
+            } catch (e) {
+                // ignore copy failure
+            }
+        }
         if (docContentEl && docContentEl.tagName === 'TEXTAREA') {
             docContentEl.value = text;
-        } else if (docContentEl) {
-            docContentEl.innerHTML = '';
-            docContentEl.appendChild(container);
         }
     }
 
@@ -117,6 +139,34 @@
         currentUtterance.rate = 0.95;
         currentUtterance.pitch = 1;
 
+        // Show preview overlay and sync scrolling, then use boundary events to highlight the current word (browser support varies)
+        if (previewEl) {
+            previewEl.style.display = 'block';
+            previewEl.style.zIndex = '9999';
+            // sync scroll while speaking
+            const syncScroll = () => {
+                try {
+                    previewEl.scrollTop = docContentEl.scrollTop;
+                    previewEl.scrollLeft = docContentEl.scrollLeft;
+                } catch (e) { /* ignore */ }
+            };
+            scrollSyncHandler = syncScroll;
+            docContentEl.addEventListener('scroll', scrollSyncHandler);
+            // do an initial sync
+            syncScroll();
+            // hide textarea text and focus ring while overlay is visible
+            try {
+                docContentEl._savedStyles = {
+                    color: docContentEl.style.color || '',
+                    outline: docContentEl.style.outline || '',
+                    boxShadow: docContentEl.style.boxShadow || ''
+                };
+                docContentEl.style.color = 'transparent';
+                docContentEl.style.outline = 'none';
+                docContentEl.style.boxShadow = 'none';
+            } catch (e) { /* ignore */ }
+        }
+
         // Use boundary events to highlight the current word (browser support varies)
         if ('onboundary' in SpeechSynthesisUtterance.prototype) {
             currentUtterance.onboundary = (evt) => {
@@ -132,6 +182,7 @@
                             }
                             span.classList.add('highlight');
                             currentHighlighted = span;
+                            // scroll preview into view to keep highlight visible
                             span.scrollIntoView({ block: 'nearest', inline: 'nearest' });
                             break;
                         }
@@ -147,6 +198,22 @@
                 currentHighlighted.classList.remove('highlight');
                 currentHighlighted = null;
             }
+            // hide preview overlay
+            if (previewEl) previewEl.style.display = 'none';
+            // restore textarea styles
+            try {
+                if (docContentEl && docContentEl._savedStyles) {
+                    docContentEl.style.color = docContentEl._savedStyles.color || '';
+                    docContentEl.style.outline = docContentEl._savedStyles.outline || '';
+                    docContentEl.style.boxShadow = docContentEl._savedStyles.boxShadow || '';
+                    docContentEl._savedStyles = null;
+                }
+            } catch (e) { /* ignore */ }
+            // remove scroll sync handler
+            if (scrollSyncHandler && docContentEl) {
+                docContentEl.removeEventListener('scroll', scrollSyncHandler);
+                scrollSyncHandler = null;
+            }
             currentUtterance = null;
         };
 
@@ -161,17 +228,22 @@
                 currentHighlighted.classList.remove('highlight');
                 currentHighlighted = null;
             }
+            if (previewEl) previewEl.style.display = 'none';
+            if (scrollSyncHandler && docContentEl) {
+                docContentEl.removeEventListener('scroll', scrollSyncHandler);
+                scrollSyncHandler = null;
+            }
+            try {
+                if (docContentEl && docContentEl._savedStyles) {
+                    docContentEl.style.color = docContentEl._savedStyles.color || '';
+                    docContentEl.style.outline = docContentEl._savedStyles.outline || '';
+                    docContentEl.style.boxShadow = docContentEl._savedStyles.boxShadow || '';
+                    docContentEl._savedStyles = null;
+                }
+            } catch (e) { /* ignore */ }
         }
     }
-    const cancelBtn = document.getElementById('cancel-btn');
-
-    cancelBtn && cancelBtn.addEventListener('click', cancel);
-
-    function cancel() {
-    // stop and close
-    stop();
-    try { window.close(); } catch (e) { window.location.href = 'create.html'; }
-  }
+    
 
     document.addEventListener('DOMContentLoaded', () => {
         loadDocument();
