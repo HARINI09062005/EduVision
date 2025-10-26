@@ -5,80 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Document - EduVision</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .doc-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            color: var(--text-color);
-            white-space: pre-wrap;
-            line-height: 1.6;
-            min-height: 60vh;
-        }
-
-        .doc-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .viewer-footer-note {
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            opacity: 0.85;
-        }
-
-        /* Accessibility controls reuse */
-        .accessibility-controls { right: 20px; bottom: 20px; }
-    </style>
+    <link rel="stylesheet" href="editor.css">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header role="banner">
-        <div class="container">
-            <div class="logo">
-                <img src="logo.jpg" alt="EduVision logo" width="50" height="50">
-            </div>
-            <nav role="navigation" aria-label="Main navigation">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="create.html" aria-current="page">Create</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="settings.html">Settings</a></li>
-                </ul>
-            </nav>
-            <div class="profile-logo">
-                <a href="profile.html" aria-label="Go to profile page">
-                    <img src="profile.jpg" alt="User profile" width="40" height="40">
-                </a>
-            </div>
-        </div>
-    </header>
+<header>
+    <div class="container">
+      <h1>View Document</h1>
+    </div>
+  </header>
 
     <main id="main-content">
-        <div class="container">
+        <div class="container editor-page">
             <div id="doc" class="doc-container" role="document" aria-live="polite">
-                <div id="doc-title" class="doc-title">Loading document...</div>
-                <div id="doc-content">If the document doesn't appear, it may not be a plain-text file. Use the download link below.</div>
+                <label for="doc-name" class="visually-hidden">Document name</label><br>
+                <input id="doc-name" type="text" placeholder="Document name (optional)" readonly />
+                <br>
+                
+
+                <label for="editor-textarea" class="visually-hidden">Document content</label>
+                <div class="editor-area">
+                    <textarea id="editor-textarea" rows="18" placeholder="Type your document here..." readonly></textarea>
+                    <div id="editor-preview" class="editor-preview" aria-hidden="true"></div>
+                </div>
+
                 <div id="download-link" class="viewer-footer-note"></div>
             </div>
         </div>
     </main>
 
-    <!-- Speak / Stop controls -->
-    <div class="accessibility-controls" role="region" aria-label="Document controls">
-        <button id="speak-btn" class="control-btn" aria-label="Speak document">
+    <!-- Speak / Stop controls (use editor control container so editor.css applies) -->
+    <div class="editor-controls-bottom" role="group" aria-label="Document controls">
+        <button id="speak-btn" type="button" class="control-btn" aria-label="Speak document" title="Speak (Alt+P)">
             <span class="icon">🗣️</span>
-            <span class="text">Speak</span>
         </button>
-        <button id="stop-btn" class="control-btn" aria-label="Stop speaking">
+        <button id="stop-btn" type="button" class="control-btn" aria-label="Stop speaking" title="Stop (Alt+X)">
             <span class="icon">⏹️</span>
-            <span class="text">Stop</span>
         </button>
+        <button id="cancel-btn" type="button" class="control-btn" aria-label="Cancel" title="Cancel">
+        <span class="icon">✖️</span>
+      </button>
     </div>
 
     <script src="view.js"></script>

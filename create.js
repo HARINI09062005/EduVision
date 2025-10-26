@@ -8,6 +8,7 @@ let uploadBtn;
 let fileUpload;
 let createBtn;
 // documentsList removed (Recent Documents UI removed)
+// inline editor moved to standalone page (editor.html)
 
 // Accessibility Controls (assigned on init) - use distinct names to avoid global conflicts
 let createMicToggle;
@@ -55,6 +56,7 @@ function initCreatePage() {
     createMicToggle = document.getElementById('mic-toggle');
     createStopToggle = document.getElementById('stop-toggle');
     createSpeakingToggle = document.getElementById('speaking-toggle');
+    // Editor moved to standalone page; no inline editor elements to bind here
 
     // Recent documents UI removed; nothing to render here
 
@@ -67,9 +69,14 @@ function initCreatePage() {
     // Set up accessibility controls
     setupAccessibilityControls();
 
+    // No inline editor controls to wire (external editor.html handles its own logic)
+
     // Announce to screen reader
     announceToScreenReader('Create page initialized with all accessibility controls');
 }
+
+// Initialize editor controls and event handlers
+// Inline editor functions removed (editor moved to editor.html)
 
 // Set up accessibility controls
 function setupAccessibilityControls() {
@@ -325,8 +332,13 @@ function handleFileUpload(e) {
 
 // Create new document
 function createNewDocument() {
-    // In a real app, this would open a document editor. For now, announce the action.
-    announceToScreenReader('Create new document requested');
+    // Open the standalone editor page in a new tab
+    try {
+        window.open('editor.html', '_blank');
+    } catch (e) {
+        // Fallback: navigate in current tab
+        window.location.href = 'editor.html';
+    }
 }
 
 // Open document

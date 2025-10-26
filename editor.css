@@ -1,0 +1,116 @@
+/* Minimal editor styles */
+.editor-page {
+  max-width: 900px;
+  margin: 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#doc-name {
+  font-size: 1rem;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#editor-textarea {
+  width: 100%;
+  min-height: 360px;
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.editor-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-controls button {
+  padding: 8px 12px;
+  background: #2b6cb0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editor-controls button[type="button"]:not(:disabled):hover {
+  background: #234e7a;
+}
+
+#save-status {
+  margin-top: 8px;
+  color: #2d7a2d;
+}
+
+@media (max-width: 600px) {
+  #editor-textarea { min-height: 240px; }
+  .editor-controls { flex-wrap: wrap; }
+}
+
+/* Bottom-right fixed controls */
+.editor-controls-bottom {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  gap: 10px;
+  background-color: var(--card-bg);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.editor-controls-bottom .control-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-color);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.editor-controls-bottom .control-btn:hover,
+.editor-controls-bottom .control-btn:focus {
+  transform: scale(1.1);
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.editor-controls-bottom .control-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.editor-controls-bottom .control-btn .icon { font-size: 1.5rem; margin-bottom: 0; }
+.editor-area { position: relative; }
+.editor-preview {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  padding: 12px;
+  pointer-events: none; /* read-only overlay when visible */
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  display: none;
+  overflow-wrap: break-word;
+  background: #ffffff; /* force a light background while speaking */
+  color: #000000; /* ensure readable text color */
+}
+.word-span.highlight { background: #fff59d; border-radius: 2px; }

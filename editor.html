@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create Document - EduVision Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Create Document</h1>
+    </div>
+  </header>
+
+  <main class="container editor-page" role="main">
+    <label for="doc-name" class="visually-hidden">Document name</label>
+    <input id="doc-name" type="text" placeholder="Document name (optional)" aria-label="Document name">
+
+    <label for="editor-textarea" class="visually-hidden">Document content</label>
+    <div class="editor-area">
+      <textarea id="editor-textarea" rows="18" placeholder="Type your document here..." aria-label="Document editor"></textarea>
+      <div id="editor-preview" class="editor-preview" aria-hidden="true"></div>
+    </div>
+
+    <!-- Controls are fixed to bottom-right like viewer page -->
+    <div class="editor-controls-bottom" role="group" aria-label="Editor controls">
+      <button id="speak-btn" type="button" class="control-btn" aria-label="Speak" title="Speak (Alt+P)">
+        <span class="icon">🎤</span>
+      </button>
+
+      <button id="stop-btn" type="button" class="control-btn" aria-label="Stop" title="Stop (Alt+X)">
+        <span class="icon">⏹️</span>
+      </button>
+
+      <button id="save-btn" type="button" class="control-btn" aria-label="Save" title="Save">
+        <span class="icon">💾</span>
+      </button>
+
+      <button id="cancel-btn" type="button" class="control-btn" aria-label="Cancel" title="Cancel">
+        <span class="icon">✖️</span>
+      </button>
+    </div>
+
+    <div id="save-status" aria-live="polite" class="visually-hidden"></div>
+  </main>
+
+  <script src="editor.js"></script>
+</body>
+</html>

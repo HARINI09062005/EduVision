@@ -3,8 +3,8 @@
     const params = new URLSearchParams(window.location.search);
     const docKey = params.get('docKey');
 
-    const docTitleEl = document.getElementById('doc-title');
-    const docContentEl = document.getElementById('doc-content');
+    const docNameEl = document.getElementById('doc-name');
+    const docContentEl = document.getElementById('editor-textarea');
     const downloadLinkEl = document.getElementById('download-link');
 
     let currentUtterance = null;
@@ -20,39 +20,40 @@
 
     function loadDocument() {
         if (!docKey) {
-            docTitleEl.textContent = 'No document specified';
-            docContentEl.textContent = 'Missing document key.';
+            if (docNameEl) docNameEl.value = 'No document specified';
+            if (docContentEl) docContentEl.value = 'Missing document key.';
             return;
         }
 
         const raw = localStorage.getItem(docKey);
         if (!raw) {
-            docTitleEl.textContent = 'Document not found';
-            docContentEl.textContent = 'The requested document could not be found in local storage. It may have been removed.';
+            if (docNameEl) docNameEl.value = 'Document not found';
+            if (docContentEl) docContentEl.value = 'The requested document could not be found in local storage. It may have been removed.';
             return;
         }
 
         try {
             const payload = JSON.parse(raw);
             const { name, content, fileUrl } = payload;
-            docTitleEl.textContent = name || 'Document';
+            if (docNameEl) docNameEl.value = name || '';
 
             if (content) {
-                renderContentWithSpans(content);
+                // show content in the textarea
+                if (docContentEl) docContentEl.value = content;
                 downloadLinkEl.innerHTML = '';
             } else if (fileUrl) {
-                docContentEl.textContent = 'Preview not available for this file type.';
+                if (docContentEl) docContentEl.value = 'Preview not available for this file type.';
                 downloadLinkEl.innerHTML = `<a href="${fileUrl}" download="${name}">Download ${name}</a>`;
             } else {
-                docContentEl.textContent = 'No preview available.';
+                if (docContentEl) docContentEl.value = 'No preview available.';
             }
 
             // Optionally remove item from localStorage after reading
             // localStorage.removeItem(docKey);
         } catch (err) {
             console.error('Failed to parse document payload', err);
-            docTitleEl.textContent = 'Error loading document';
-            docContentEl.textContent = 'Unable to load the document content.';
+            if (docNameEl) docNameEl.value = 'Error loading document';
+            if (docContentEl) docContentEl.value = 'Unable to load the document content.';
         }
     }
 
@@ -89,9 +90,16 @@
             document.head.appendChild(style);
         }
 
-        docContentEl.innerHTML = '';
-        docContentEl.appendChild(container);
+        // If the target is a textarea, set the value instead of inserting spans
+        if (docContentEl && docContentEl.tagName === 'TEXTAREA') {
+            docContentEl.value = text;
+        } else if (docContentEl) {
+            docContentEl.innerHTML = '';
+            docContentEl.appendChild(container);
+        }
     }
+
+
 
     // Speak the document text
     function speakDocument() {
@@ -100,7 +108,7 @@
             window.speechSynthesis.cancel();
             currentUtterance = null;
         }
-        const text = docContentEl.textContent || '';
+        const text = (docContentEl && 'value' in docContentEl) ? docContentEl.value : (docContentEl.textContent || '');
         if (!text.trim()) {
             return; // nothing to speak
         }
@@ -155,6 +163,15 @@
             }
         }
     }
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    cancelBtn && cancelBtn.addEventListener('click', cancel);
+
+    function cancel() {
+    // stop and close
+    stop();
+    try { window.close(); } catch (e) { window.location.href = 'create.html'; }
+  }
 
     document.addEventListener('DOMContentLoaded', () => {
         loadDocument();
