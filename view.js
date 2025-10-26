@@ -244,6 +244,15 @@
         }
     }
     
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    cancelBtn && cancelBtn.addEventListener('click', cancel);
+
+    function cancel() {
+    // stop and close
+    stop();
+    try { window.close(); } catch (e) { window.location.href = 'create.html'; }
+  }
 
     document.addEventListener('DOMContentLoaded', () => {
         loadDocument();
