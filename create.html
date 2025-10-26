@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create - EduVision</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="create.css">
+</head>
+<body>
+    <header role="banner">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.jpg" alt="EduVision logo" width="50" height="50">
+            </div>
+            <nav role="navigation" aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="create.html" aria-current="page">Create</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="profile-logo">
+                <a href="profile.html" aria-label="Go to profile page">
+                    <img src="profile.jpg" alt="User profile" width="40" height="40">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <div class="container">
+            <!-- Search Bar -->
+            <section class="search-section" aria-labelledby="search-heading">
+                <h2 id="search-heading" class="visually-hidden">Search your documents</h2>
+                <div class="search-container">
+                    <label for="search-input" class="visually-hidden">Search your documents</label>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        class="search-input" 
+                        placeholder="Search your documents" 
+                        aria-label="Search your documents"
+                    >
+                    <button 
+                        id="voice-search" 
+                        class="voice-search-btn" 
+                        aria-label="Activate mic for search"
+                        title="Activate mic for search (Alt+S)"
+                    >
+                        <span class="icon">🎤</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- File Options -->
+            <section class="file-options" aria-labelledby="file-options-heading">
+                <h2 id="file-options-heading" class="visually-hidden">File Options</h2>
+                <div class="file-options-grid">
+                    <!-- Upload File -->
+                    <div class="file-option-card">
+                        <h3>Upload Document</h3>
+                        <button id="upload-btn" class="file-action-btn" aria-label="Upload a file">
+                            <div class="file-option-icon">
+                                <span class="icon">📁</span>
+                            </div>
+                            <span class="text">Upload Document</span>
+                        </button>
+                        <p class="voice-tip">Say "Upload file" to trigger upload</p>
+                        <input type="file" id="file-upload" class="visually-hidden" aria-label="File upload">
+                    </div>
+
+                    <!-- Create File -->
+                    <div class="file-option-card">
+                        <h3>Create New Document</h3>
+                        <button id="create-btn" class="file-action-btn" aria-label="Create a new file">
+                            <div class="file-option-icon">
+                                <span class="icon">📝</span>
+                            </div>
+                            <span class="text">Create New Document</span>
+                        </button>
+                        <p class="voice-tip">Say "New file" to begin</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Documents -->
+            <section class="recent-documents" aria-labelledby="recent-docs-heading">
+                <h2 id="recent-docs-heading">Recent Documents</h2>
+                <div class="documents-list" role="list">
+                    <!-- Document items will be added dynamically -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h2>Keyboard Shortcuts</h2>
+                    <ul>
+                        <li><kbd>Ctrl</kbd> + <kbd>F</kbd> - Focus search</li>
+                        <li><kbd>Alt</kbd> + <kbd>S</kbd> - Voice search</li>
+                        <li><kbd>Alt</kbd> + <kbd>U</kbd> - Upload file</li>
+                        <li><kbd>Alt</kbd> + <kbd>N</kbd> - New document</li>
+                        <li><kbd>Alt</kbd> + <kbd>M</kbd> - Toggle microphone</li>
+                        <li><kbd>Alt</kbd> + <kbd>P</kbd> - Toggle speaking mode</li>
+                        <li><kbd>Alt</kbd> + <kbd>X</kbd> - Stop all audio</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h2>Voice Commands</h2>
+                    <ul>
+                        <li>"Upload file" - Trigger file upload</li>
+                        <li>"New file" - Create new document</li>
+                        <li>"Search for [term]" - Search documents</li>
+                        <li>"Read page" - Read page content</li>
+                        <li>"Stop" - Stop all audio</li>
+                        <li>"Speaking mode" - Toggle speaking mode</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Accessibility</h2>
+                    <ul>
+                        <li><button id="contrast-toggle">Toggle High Contrast</button></li>
+                        <li><button id="font-size-toggle">Increase Font Size</button></li>
+                        <li><button id="audio-only-toggle">Audio Only Mode</button></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Contact</h2>
+                    <p>Need help? <a href="contact.html">Contact our support team</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls" role="region" aria-label="Accessibility Controls">
+        <button id="mic-toggle" class="control-btn" aria-label="Toggle microphone" title="Toggle microphone (Alt+M)">
+            <span class="icon">🎤</span>
+            <span class="text">Microphone</span>
+        </button>
+        <button id="stop-toggle" class="control-btn" aria-label="Stop audio" title="Stop all audio (Alt+X)">
+            <span class="icon">⏹️</span>
+            <span class="text">Stop</span>
+        </button>
+        <button id="speaking-toggle" class="control-btn" aria-label="Toggle speaking mode" title="Toggle speaking mode (Alt+P)">
+            <span class="icon">🗣️</span>
+            <span class="text">Speaking</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="create.js"></script>
+    <script>
+        // Ensure the create.js script is loaded and executed
+        console.log('Inline script executed');
+        if (typeof initCreatePage === 'function') {
+            console.log('initCreatePage function found');
+            // Call it again to make sure it runs
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOM fully loaded, calling initCreatePage again');
+                initCreatePage();
+            });
+        } else {
+            console.error('initCreatePage function not found');
+        }
+    </script>
+</body>
+</html> 

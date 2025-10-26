@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - EduVision</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg" alt="EduVision Logo" width="50" height="50">
+                    <span></span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="create.html">Create</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="settings.html" aria-current="page">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="profile-logo">
+                <a href="profile.html">
+                    <img src="profile.jpg" alt="Profile" width="40" height="40">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="container">
+            <h1 class="page-title">Settings</h1>
+            
+            <!-- User Profile Section -->
+            <section class="settings-section profile-section">
+                <h2>User Profile</h2>
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-image">
+                            <img src="profile.jpg" alt="Profile Picture" id="profile-picture">
+                            <button class="change-photo-btn" aria-label="Change profile picture">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-name">
+                                <h3>Harini</h3>
+                                <button class="edit-btn" aria-label="Edit name">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <p class="profile-email">harini@eduvision.tech</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="action-btn edit-profile-btn" aria-label="Edit profile information button">
+                            <i class="fas fa-user-edit"></i> Edit Profile Info
+                        </button>
+                        <button class="action-btn change-password-btn" aria-label="Change password button">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <button class="action-btn logout-btn" aria-label="Logout button">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contact & Support Section -->
+            <section class="settings-section contact-section">
+                <h2>Contact & Support</h2>
+                <div class="contact-card">
+                    <p class="contact-intro">Need help or want to reach out?</p>
+                    <div class="contact-options">
+                        <div class="contact-option">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email: support@eduvision.tech</span>
+                        </div>
+                        <div class="contact-option">
+                            <i class="fas fa-phone"></i>
+                            <span>Phone: +123-456-789</span>
+                        </div>
+                        <div class="contact-option">
+                            <i class="fas fa-comments"></i>
+                            <span>Live Chat</span>
+                        </div>
+                    </div>
+                    <button class="send-message-btn" aria-label="Send a message button">
+                        <i class="fas fa-paper-plane"></i> Send a Message
+                    </button>
+                    
+                    <!-- Contact Form (Hidden by default) -->
+                    <div class="contact-form" id="contact-form">
+                        <h3>Send us a message</h3>
+                        <p class="screen-reader-hint">Use Tab to move between fields.</p>
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Send Message</button>
+                                <button type="button" class="cancel-btn" id="cancel-message">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FAQ Section -->
+            <section class="settings-section faq-section">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question" aria-expanded="false">
+                            <h3>How do I activate the microphone?</h3>
+                            <button class="expand-btn" aria-label="Expand answer">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To activate the microphone, click on the microphone icon in the accessibility controls at the bottom of the page, or press Alt+M on your keyboard. You can then use voice commands to navigate the application.</p>
+                            <button class="play-answer-btn" aria-label="Play answer aloud">
+                                <i class="fas fa-volume-up"></i> Play answer aloud
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" aria-expanded="false">
+                            <h3>How do I change my password?</h3>
+                            <button class="expand-btn" aria-label="Expand answer">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To change your password, go to the User Profile section and click on the "Change Password" button. You'll be prompted to enter your current password and then your new password twice for confirmation.</p>
+                            <button class="play-answer-btn" aria-label="Play answer aloud">
+                                <i class="fas fa-volume-up"></i> Play answer aloud
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" aria-expanded="false">
+                            <h3>How do I enable high contrast mode?</h3>
+                            <button class="expand-btn" aria-label="Expand answer">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To enable high contrast mode, go to the App Preferences section and select "High Contrast" from the Theme options. This will increase the contrast between text and background colors for better visibility.</p>
+                            <button class="play-answer-btn" aria-label="Play answer aloud">
+                                <i class="fas fa-volume-up"></i> Play answer aloud
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" aria-expanded="false">
+                            <h3>How do I adjust the font size?</h3>
+                            <button class="expand-btn" aria-label="Expand answer">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To adjust the font size, go to the App Preferences section and select your preferred size from the Font Size options (Small, Medium, or Large). You can also use the keyboard shortcut Ctrl+Plus to increase or Ctrl+Minus to decrease the font size.</p>
+                            <button class="play-answer-btn" aria-label="Play answer aloud">
+                                <i class="fas fa-volume-up"></i> Play answer aloud
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" aria-expanded="false">
+                            <h3>How do I change the language?</h3>
+                            <button class="expand-btn" aria-label="Expand answer">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To change the language, go to the App Preferences section and select your preferred language from the Language dropdown menu. The interface will update immediately to reflect your selection.</p>
+                            <button class="play-answer-btn" aria-label="Play answer aloud">
+                                <i class="fas fa-volume-up"></i> Play answer aloud
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- App Preferences Section -->
+            <section class="settings-section preferences-section">
+                <h2>App Preferences</h2>
+                <div class="preferences-card">
+                    <div class="preference-group">
+                        <h3>Theme</h3>
+                        <div class="theme-options">
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="light" checked>
+                                <span class="theme-label">Light</span>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="dark">
+                                <span class="theme-label">Dark</span>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="high-contrast">
+                                <span class="theme-label">High Contrast</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-group">
+                        <h3>Font Size</h3>
+                        <div class="font-size-options">
+                            <label class="font-size-option">
+                                <input type="radio" name="font-size" value="small">
+                                <span class="font-size-label">Small</span>
+                            </label>
+                            <label class="font-size-option">
+                                <input type="radio" name="font-size" value="medium" checked>
+                                <span class="font-size-label">Medium</span>
+                            </label>
+                            <label class="font-size-option">
+                                <input type="radio" name="font-size" value="large">
+                                <span class="font-size-label">Large</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-group">
+                        <h3>Language</h3>
+                        <div class="language-selector">
+                            <select id="language-select" aria-label="Select language">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="zh">中文</option>
+                                <option value="ja">日本語</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-group">
+                        <h3>Voice Feedback</h3>
+                        <div class="toggle-container">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="voice-feedback-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-label">Voice instructions ON/OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-actions">
+                        <button class="save-preferences-btn" aria-label="Save preferences button">
+                            <i class="fas fa-save"></i> Save Preferences
+                        </button>
+                        <button class="reset-preferences-btn" aria-label="Reset preferences button">
+                            <i class="fas fa-undo"></i> Reset to Default
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Keyboard Shortcuts</h3>
+                    <ul>
+                        <li><kbd>Alt</kbd> + <kbd>H</kbd> - Go to Home</li>
+                        <li><kbd>Alt</kbd> + <kbd>C</kbd> - Go to Create</li>
+                        <li><kbd>Alt</kbd> + <kbd>A</kbd> - Go to About</li>
+                        <li><kbd>Alt</kbd> + <kbd>S</kbd> - Go to Settings</li>
+                        <li><kbd>Alt</kbd> + <kbd>M</kbd> - Toggle Microphone</li>
+                        <li><kbd>Alt</kbd> + <kbd>P</kbd> - Toggle Speaking Mode</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Voice Commands</h3>
+                    <ul>
+                        <li>"Go to Home"</li>
+                        <li>"Go to Create"</li>
+                        <li>"Go to About"</li>
+                        <li>"Go to Settings"</li>
+                        <li>"Read page"</li>
+                        <li>"Stop"</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Accessibility</h3>
+                    <ul>
+                        <li><a href="#" id="increase-text">Increase Text Size</a></li>
+                        <li><a href="#" id="decrease-text">Decrease Text Size</a></li>
+                        <li><a href="#" id="high-contrast">High Contrast Mode</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: info@eduvision.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EduVision. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls">
+        <button id="mic-toggle" class="control-btn" aria-label="Toggle microphone" title="Toggle microphone (Alt+M)">
+            <span class="icon">🎤</span>
+            <span class="text">Microphone</span>
+        </button>
+        <button id="stop-toggle" class="control-btn" aria-label="Stop audio" title="Stop all audio (Alt+X)">
+            <span class="icon">⏹️</span>
+            <span class="text">Stop</span>
+        </button>
+        <button id="speaking-toggle" class="control-btn" aria-label="Toggle speaking mode" title="Toggle speaking mode (Alt+P)">
+            <span class="icon">🗣️</span>
+            <span class="text">Speaking</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html> 

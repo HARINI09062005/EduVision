@@ -1,0 +1,559 @@
+/* Settings Page Styles */
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    margin: 2rem 0;
+    color: var(--primary-color);
+    font-size: 2.5rem;
+}
+
+/* Settings Sections */
+.settings-section {
+    margin-bottom: 3rem;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.settings-section h2 {
+    padding: 1.5rem;
+    margin: 0;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Profile Section */
+.profile-card {
+    padding: 2rem;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-image {
+    position: relative;
+    margin-right: 2rem;
+}
+
+.profile-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+}
+
+.change-photo-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.change-photo-btn:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.1);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.profile-name h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    color: var(--hover-color);
+    transform: scale(1.1);
+}
+
+.profile-email {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.action-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+.action-btn i {
+    font-size: 1.1rem;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Contact Section */
+.contact-card {
+    padding: 2rem;
+}
+
+.contact-intro {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.contact-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.contact-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: rgba(74, 144, 226, 0.1);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.contact-option:hover {
+    background-color: rgba(74, 144, 226, 0.2);
+    transform: translateX(5px);
+}
+
+.contact-option i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.send-message-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.send-message-btn:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+/* Contact Form */
+.contact-form {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(74, 144, 226, 0.05);
+    border-radius: 5px;
+    display: none;
+}
+
+.contact-form.active {
+    display: block;
+}
+
+.contact-form h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.screen-reader-hint {
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.submit-btn,
+.cancel-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.cancel-btn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #d0d0d0;
+}
+
+/* FAQ Section */
+.faq-container {
+    padding: 2rem;
+}
+
+.faq-item {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    background-color: rgba(74, 144, 226, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: rgba(74, 144, 226, 0.2);
+}
+
+.faq-question h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-question[aria-expanded="true"] .expand-btn {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-question[aria-expanded="true"] + .faq-answer {
+    padding: 1.2rem;
+    max-height: 500px;
+}
+
+.faq-answer p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.play-answer-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.play-answer-btn:hover {
+    color: var(--hover-color);
+}
+
+/* App Preferences Section */
+.preferences-card {
+    padding: 2rem;
+}
+
+.preference-group {
+    margin-bottom: 2rem;
+}
+
+.preference-group h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+/* Theme Options */
+.theme-options,
+.font-size-options {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.theme-option,
+.font-size-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.theme-label,
+.font-size-label {
+    color: var(--text-color);
+}
+
+/* Language Selector */
+.language-selector select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.language-selector select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* Toggle Switch */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+input:focus + .toggle-slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.toggle-label {
+    color: var(--text-color);
+}
+
+/* Preference Actions */
+.preference-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.save-preferences-btn,
+.reset-preferences-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.save-preferences-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.save-preferences-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.reset-preferences-btn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.reset-preferences-btn:hover {
+    background-color: #d0d0d0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-image {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-name {
+        justify-content: center;
+    }
+    
+    .profile-actions {
+        justify-content: center;
+    }
+    
+    .theme-options,
+    .font-size-options {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .preference-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn,
+    .send-message-btn,
+    .save-preferences-btn,
+    .reset-preferences-btn {
+        width: 100%;
+        justify-content: center;
+    }
+} 

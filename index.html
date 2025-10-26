@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduVision - Braille Bluetooth Keyboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Skip to content link for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.jpg" alt="EduVision logo" width="50" height="50">
+            </div>
+            <nav role="navigation" aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html" aria-current="page">Home</a></li>
+                    <li><a href="create.html">Create</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="profile-logo">
+                <a href="profile.html" aria-label="Go to profile page">
+                    <img src="profile.jpg" alt="User profile" width="40" height="40">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="container">
+                <h1 id="hero-heading">EduVision: The Braille Bluetooth Keyboard for the Blind</h1>
+                <p class="hero-text">Type, Save, Share — All through touch and voice.</p>
+                
+                <div class="cta-buttons">
+                    <button id="how-it-works-btn" class="btn primary">Learn how it works</button>
+                    <a href="demo.html" class="btn secondary">Try a demo</a>
+                </div>
+
+                <button id="audio-intro" class="audio-btn" aria-label="Play audio introduction">
+                    <span class="icon">🔊</span>
+                    <span class="text">Play Audio Introduction</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal" role="dialog" aria-labelledby="video-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="video-modal-title">How EduVision Works</h2>
+                <button id="close-video-modal" class="close-btn" aria-label="Close video">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video id="how-it-works-video" controls>
+                    <source src="video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h2>Keyboard Shortcuts</h2>
+                    <ul>
+                        <li><kbd>Alt</kbd> + <kbd>H</kbd> - Home</li>
+                        <li><kbd>Alt</kbd> + <kbd>M</kbd> - Main menu</li>
+                        <li><kbd>Alt</kbd> + <kbd>A</kbd> - Accessibility options</li>
+                        <li><kbd>Alt</kbd> + <kbd>C</kbd> - Go to Create page</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h2>Voice Commands</h2>
+                    <ul>
+                        <li>"Read page" - Screen reader activation</li>
+                        <li>"Navigate to [section]" - Jump to section</li>
+                        <li>"Increase contrast" - Toggle high contrast</li>
+                        <li>"Go to create" - Navigate to Create page</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Accessibility</h2>
+                    <ul>
+                        <li><button id="contrast-toggle">Toggle High Contrast</button></li>
+                        <li><button id="font-size-toggle">Increase Font Size</button></li>
+                        <li><button id="audio-only-toggle">Audio Only Mode</button></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Contact</h2>
+                    <p>Need help? <a href="contact.html">Contact our support team</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls" role="region" aria-label="Accessibility Controls">
+        <button id="mic-toggle" class="control-btn" aria-label="Toggle microphone">
+            <span class="icon">🎤</span>
+            <span class="text">Microphone</span>
+        </button>
+        <button id="stop-toggle" class="control-btn" aria-label="Stop audio">
+            <span class="icon">⏹️</span>
+            <span class="text">Stop</span>
+        </button>
+        <button id="speaking-toggle" class="control-btn" aria-label="Toggle speaking mode">
+            <span class="icon">🗣️</span>
+            <span class="text">Speaking</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Video modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoModal = document.getElementById('video-modal');
+            const howItWorksBtn = document.getElementById('how-it-works-btn');
+            const closeVideoModal = document.getElementById('close-video-modal');
+            const video = document.getElementById('how-it-works-video');
+            
+            // Open modal when button is clicked
+            howItWorksBtn.addEventListener('click', function() {
+                videoModal.style.display = 'block';
+                video.play();
+                // Announce to screen readers
+                const announcement = document.createElement('div');
+                announcement.setAttribute('aria-live', 'polite');
+                announcement.textContent = 'Video modal opened. Playing how it works video.';
+                document.body.appendChild(announcement);
+                setTimeout(() => {
+                    document.body.removeChild(announcement);
+                }, 3000);
+            });
+            
+            // Close modal when close button is clicked
+            closeVideoModal.addEventListener('click', function() {
+                videoModal.style.display = 'none';
+                video.pause();
+                video.currentTime = 0;
+            });
+            
+            // Close modal when clicking outside the modal content
+            window.addEventListener('click', function(event) {
+                if (event.target === videoModal) {
+                    videoModal.style.display = 'none';
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && videoModal.style.display === 'block') {
+                    videoModal.style.display = 'none';
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

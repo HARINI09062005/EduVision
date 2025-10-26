@@ -1,0 +1,446 @@
+/* Base styles and CSS variables for theming */
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --background-color: #1a1a1a;
+    --header-bg: #2c3e50;
+    --footer-bg: #2c3e50;
+    --link-color: #4a90e2;
+    --focus-outline: 3px solid #4a90e2;
+    --font-size-base: 16px;
+    --line-height: 1.5;
+    --card-bg: #2c3e50;
+    --hover-color: #3498db;
+}
+
+/* High contrast theme */
+[data-theme="high-contrast"] {
+    --primary-color: #ffff00;
+    --secondary-color: #ffffff;
+    --text-color: #ffffff;
+    --background-color: #000000;
+    --header-bg: #000000;
+    --footer-bg: #000000;
+    --link-color: #ffff00;
+    --focus-outline: 3px solid #ffff00;
+    --card-bg: #000000;
+    --hover-color: #ffff00;
+}
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: var(--line-height);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    font-size: var(--font-size-base);
+}
+
+/* Skip link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary-color);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    background-color: var(--card-bg);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    border-radius: 8px;
+}
+
+.profile-logo {
+    display: flex;
+    align-items: center;
+}
+
+.profile-logo img {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.profile-logo img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+}
+
+/* Navigation */
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover,
+nav a:focus {
+    background-color: var(--hover-color);
+    color: white;
+    outline: none;
+}
+
+nav a[aria-current="page"] {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Hero section */
+.hero {
+    padding: 6rem 0;
+    text-align: center;
+    background: linear-gradient(to bottom, var(--header-bg), var(--background-color));
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0.5rem;
+    transition: all 0.3s;
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn.secondary {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn:hover,
+.btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Audio button */
+.audio-btn {
+    background: var(--card-bg);
+    border: none;
+    cursor: pointer;
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+    color: var(--text-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.audio-btn:hover,
+.audio-btn:focus {
+    background-color: var(--hover-color);
+    color: white;
+    outline: none;
+}
+
+/* Footer */
+footer {
+    background-color: var(--footer-bg);
+    padding: 4rem 0;
+    margin-top: 4rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    margin-bottom: 1rem;
+}
+
+/* Keyboard shortcuts styling */
+kbd {
+    background-color: var(--card-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+/* Accessibility buttons */
+#contrast-toggle,
+#font-size-toggle,
+#audio-only-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--primary-color);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: var(--text-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+#contrast-toggle:hover,
+#font-size-toggle:hover,
+#audio-only-toggle:hover {
+    background-color: var(--hover-color);
+    color: white;
+    border-color: var(--hover-color);
+}
+
+/* Focus styles */
+:focus {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print styles */
+@media print {
+    .skip-link,
+    nav,
+    .audio-btn,
+    .footer-section button {
+        display: none;
+    }
+}
+
+/* Accessibility Controls */
+.accessibility-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    background-color: var(--card-bg);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.control-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--background-color);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover,
+.control-btn:focus {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+.control-btn .icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.control-btn .text {
+    font-size: 0.8rem;
+}
+
+.control-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Responsive design for accessibility controls */
+@media (max-width: 768px) {
+    .accessibility-controls {
+        bottom: 10px;
+        right: 10px;
+        padding: 5px;
+    }
+
+    .control-btn {
+        padding: 5px;
+    }
+
+    .control-btn .icon {
+        font-size: 1.2rem;
+    }
+
+    .control-btn .text {
+        font-size: 0.7rem;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body video {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments for the modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+} 

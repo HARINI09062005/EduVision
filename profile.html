@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - EduVision</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            margin-right: 2rem;
+        }
+        
+        .profile-info h1 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+        
+        .profile-section h2 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .profile-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .primary-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+        }
+        
+        .secondary-btn:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.jpg" alt="EduVision logo" width="50" height="50">
+            </div>
+            <nav role="navigation" aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="create.html">Create</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="profile-logo">
+                <a href="profile.html" aria-label="Go to profile page" aria-current="page">
+                    <img src="profile.jpg" alt="User profile" width="40" height="40">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="profile.jpg" alt="User profile" class="profile-image">
+                    <div class="profile-info">
+                        <h1>John Doe</h1>
+                        <p>Braille Keyboard User</p>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h2>Account Information</h2>
+                    <p><strong>Email:</strong> john.doe@example.com</p>
+                    <p><strong>Member since:</strong> January 15, 2023</p>
+                    <p><strong>Last login:</strong> Today at 10:30 AM</p>
+                </div>
+                
+                <div class="profile-section">
+                    <h2>Accessibility Preferences</h2>
+                    <p><strong>Voice commands:</strong> Enabled</strong></p>
+                    <p><strong>Screen reader:</strong> Enabled</strong></p>
+                    <p><strong>High contrast:</strong> Enabled</strong></p>
+                    <p><strong>Font size:</strong> Large</strong></p>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="profile-btn primary-btn">Edit Profile</button>
+                    <button class="profile-btn secondary-btn">Change Password</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h2>Keyboard Shortcuts</h2>
+                    <ul>
+                        <li><kbd>Ctrl</kbd> + <kbd>F</kbd> - Focus search</li>
+                        <li><kbd>Alt</kbd> + <kbd>S</kbd> - Voice search</li>
+                        <li><kbd>Alt</kbd> + <kbd>U</kbd> - Upload file</li>
+                        <li><kbd>Alt</kbd> + <kbd>N</kbd> - New document</li>
+                        <li><kbd>Alt</kbd> + <kbd>M</kbd> - Toggle microphone</li>
+                        <li><kbd>Alt</kbd> + <kbd>P</kbd> - Toggle speaking mode</li>
+                        <li><kbd>Alt</kbd> + <kbd>X</kbd> - Stop all audio</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h2>Voice Commands</h2>
+                    <ul>
+                        <li>"Upload file" - Trigger file upload</li>
+                        <li>"New file" - Create new document</li>
+                        <li>"Search for [term]" - Search documents</li>
+                        <li>"Read page" - Read page content</li>
+                        <li>"Stop" - Stop all audio</li>
+                        <li>"Speaking mode" - Toggle speaking mode</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Accessibility</h2>
+                    <ul>
+                        <li><button id="contrast-toggle">Toggle High Contrast</button></li>
+                        <li><button id="font-size-toggle">Increase Font Size</button></li>
+                        <li><button id="audio-only-toggle">Audio Only Mode</button></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h2>Contact</h2>
+                    <p>Need help? <a href="contact.html">Contact our support team</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls" role="region" aria-label="Accessibility Controls">
+        <button id="mic-toggle" class="control-btn" aria-label="Toggle microphone" title="Toggle microphone (Alt+M)">
+            <span class="icon">🎤</span>
+            <span class="text">Microphone</span>
+        </button>
+        <button id="stop-toggle" class="control-btn" aria-label="Stop audio" title="Stop all audio (Alt+X)">
+            <span class="icon">⏹️</span>
+            <span class="text">Stop</span>
+        </button>
+        <button id="speaking-toggle" class="control-btn" aria-label="Toggle speaking mode" title="Toggle speaking mode (Alt+P)">
+            <span class="icon">🗣️</span>
+            <span class="text">Speaking</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
