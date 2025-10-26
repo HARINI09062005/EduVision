@@ -45,6 +45,7 @@
                     >
                     <button 
                         id="voice-search" 
+                        type="button"
                         class="voice-search-btn" 
                         aria-label="Activate mic for search"
                         title="Activate mic for search (Alt+S)"
@@ -61,7 +62,7 @@
                     <!-- Upload File -->
                     <div class="file-option-card">
                         <h3>Upload Document</h3>
-                        <button id="upload-btn" class="file-action-btn" aria-label="Upload a file">
+                        <button id="upload-btn" type="button" class="file-action-btn" aria-label="Upload a file" onclick="(function(){ const f=document.getElementById('file-upload'); if(f) f.click(); else console.warn('file-upload input not found (inline onclick)'); })();">
                             <div class="file-option-icon">
                                 <span class="icon">📁</span>
                             </div>
@@ -74,7 +75,7 @@
                     <!-- Create File -->
                     <div class="file-option-card">
                         <h3>Create New Document</h3>
-                        <button id="create-btn" class="file-action-btn" aria-label="Create a new file">
+                        <button id="create-btn" type="button" class="file-action-btn" aria-label="Create a new file">
                             <div class="file-option-icon">
                                 <span class="icon">📝</span>
                             </div>
@@ -85,13 +86,7 @@
                 </div>
             </section>
 
-            <!-- Recent Documents -->
-            <section class="recent-documents" aria-labelledby="recent-docs-heading">
-                <h2 id="recent-docs-heading">Recent Documents</h2>
-                <div class="documents-list" role="list">
-                    <!-- Document items will be added dynamically -->
-                </div>
-            </section>
+            <!-- Recent Documents removed per user request -->
         </div>
     </main>
 
@@ -159,18 +154,21 @@
     <script src="script.js"></script>
     <script src="create.js"></script>
     <script>
-        // Ensure the create.js script is loaded and executed
-        console.log('Inline script executed');
-        if (typeof initCreatePage === 'function') {
-            console.log('initCreatePage function found');
-            // Call it again to make sure it runs
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('DOM fully loaded, calling initCreatePage again');
-                initCreatePage();
-            });
-        } else {
-            console.error('initCreatePage function not found');
-        }
+        // Resilient initializer: try to call initCreatePage when available.
+        console.log('Inline initializer executed');
+        (function waitForInit(retriesLeft) {
+            if (typeof initCreatePage === 'function') {
+                console.log('initCreatePage found, calling it now');
+                try { initCreatePage(); } catch (err) { console.error('Error calling initCreatePage:', err); }
+                return;
+            }
+            if (retriesLeft <= 0) {
+                console.error('initCreatePage function not found after waiting');
+                return;
+            }
+            // Wait a short time and try again (covers edge cases where script loading is delayed)
+            setTimeout(() => waitForInit(retriesLeft - 1), 100);
+        })(50); // try for ~5 seconds
     </script>
 </body>
 </html> 

@@ -9,10 +9,14 @@ speech.text = audioText;
 speech.rate = 0.9;
 speech.pitch = 1;
 
-audioIntro.addEventListener('click', () => {
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(speech);
-});
+if (audioIntro) {
+    audioIntro.addEventListener('click', () => {
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+    });
+} else {
+    console.debug('audioIntro element not found on this page');
+}
 
 // Accessibility features
 const contrastToggle = document.getElementById('contrast-toggle');
@@ -20,26 +24,32 @@ const fontSizeToggle = document.getElementById('font-size-toggle');
 const audioOnlyToggle = document.getElementById('audio-only-toggle');
 
 // High contrast mode
-contrastToggle.addEventListener('click', () => {
-    document.body.setAttribute('data-theme', 
-        document.body.getAttribute('data-theme') === 'high-contrast' ? '' : 'high-contrast'
-    );
-});
+if (contrastToggle) {
+    contrastToggle.addEventListener('click', () => {
+        document.body.setAttribute('data-theme', 
+            document.body.getAttribute('data-theme') === 'high-contrast' ? '' : 'high-contrast'
+        );
+    });
+} else console.debug('contrastToggle not found');
 
 // Font size toggle
 let currentFontSize = 16;
-fontSizeToggle.addEventListener('click', () => {
-    currentFontSize = currentFontSize === 16 ? 20 : 16;
-    document.documentElement.style.setProperty('--font-size-base', `${currentFontSize}px`);
-});
+if (fontSizeToggle) {
+    fontSizeToggle.addEventListener('click', () => {
+        currentFontSize = currentFontSize === 16 ? 20 : 16;
+        document.documentElement.style.setProperty('--font-size-base', `${currentFontSize}px`);
+    });
+} else console.debug('fontSizeToggle not found');
 
 // Audio only mode
-audioOnlyToggle.addEventListener('click', () => {
-    const elements = document.querySelectorAll('body > *:not(header)');
-    elements.forEach(element => {
-        element.style.display = element.style.display === 'none' ? '' : 'none';
+if (audioOnlyToggle) {
+    audioOnlyToggle.addEventListener('click', () => {
+        const elements = document.querySelectorAll('body > *:not(header)');
+        elements.forEach(element => {
+            element.style.display = element.style.display === 'none' ? '' : 'none';
+        });
     });
-});
+} else console.debug('audioOnlyToggle not found');
 
 // Navigation handling
 document.addEventListener('DOMContentLoaded', () => {
@@ -150,12 +160,16 @@ document.addEventListener('focus', (e) => {
 }, true);
 
 // Add keyboard navigation for the skip link
-document.querySelector('.skip-link').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        document.getElementById('main-content').focus();
-    }
-});
+const skipLink = document.querySelector('.skip-link');
+if (skipLink) {
+    skipLink.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const main = document.getElementById('main-content');
+            if (main) main.focus();
+        }
+    });
+} else console.debug('skip-link not found');
 
 // Accessibility Controls
 const micToggle = document.getElementById('mic-toggle');
@@ -166,82 +180,88 @@ let isMicActive = false;
 let isSpeakingActive = false;
 
 // Microphone toggle
-micToggle.addEventListener('click', () => {
-    isMicActive = !isMicActive;
-    micToggle.classList.toggle('active');
-    
-    if (isMicActive) {
-        // Start microphone
-        if ('webkitSpeechRecognition' in window) {
-            const recognition = new webkitSpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            
-            recognition.onresult = (event) => {
-                const transcript = Array.from(event.results)
-                    .map(result => result[0].transcript)
-                    .join('');
+if (micToggle) {
+    micToggle.addEventListener('click', () => {
+        isMicActive = !isMicActive;
+        micToggle.classList.toggle('active');
+        
+        if (isMicActive) {
+            // Start microphone
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
                 
-                // Handle voice commands
-                if (transcript.toLowerCase().includes('read page')) {
-                    window.speechSynthesis.speak(document.body.textContent);
-                } else if (transcript.toLowerCase().includes('stop')) {
-                    stopToggle.click();
-                } else if (transcript.toLowerCase().includes('speaking mode')) {
-                    speakingToggle.click();
-                } else if (transcript.toLowerCase().includes('go to create')) {
-                    window.location.href = 'create.html';
-                }
-            };
-            
-            recognition.start();
-            announceToScreenReader('Microphone activated');
+                recognition.onresult = (event) => {
+                    const transcript = Array.from(event.results)
+                        .map(result => result[0].transcript)
+                        .join('');
+                    
+                    // Handle voice commands
+                    if (transcript.toLowerCase().includes('read page')) {
+                        window.speechSynthesis.speak(document.body.textContent);
+                    } else if (transcript.toLowerCase().includes('stop')) {
+                        if (stopToggle) stopToggle.click();
+                    } else if (transcript.toLowerCase().includes('speaking mode')) {
+                        if (speakingToggle) speakingToggle.click();
+                    } else if (transcript.toLowerCase().includes('go to create')) {
+                        window.location.href = 'create.html';
+                    }
+                };
+                
+                recognition.start();
+                announceToScreenReader('Microphone activated');
+            } else {
+                announceToScreenReader('Speech recognition not supported in this browser');
+            }
         } else {
-            announceToScreenReader('Speech recognition not supported in this browser');
+            // Stop microphone
+            if (window.webkitSpeechRecognition) {
+                window.webkitSpeechRecognition().stop();
+            }
+            announceToScreenReader('Microphone deactivated');
         }
-    } else {
-        // Stop microphone
+    });
+} else console.debug('micToggle not found');
+
+// Stop toggle
+if (stopToggle) {
+    stopToggle.addEventListener('click', () => {
+        // Stop all audio
+        window.speechSynthesis.cancel();
         if (window.webkitSpeechRecognition) {
             window.webkitSpeechRecognition().stop();
         }
-        announceToScreenReader('Microphone deactivated');
-    }
-});
-
-// Stop toggle
-stopToggle.addEventListener('click', () => {
-    // Stop all audio
-    window.speechSynthesis.cancel();
-    if (window.webkitSpeechRecognition) {
-        window.webkitSpeechRecognition().stop();
-    }
-    
-    // Reset all states
-    isMicActive = false;
-    isSpeakingActive = false;
-    micToggle.classList.remove('active');
-    speakingToggle.classList.remove('active');
-    
-    announceToScreenReader('All audio stopped');
-});
+        
+        // Reset all states
+        isMicActive = false;
+        isSpeakingActive = false;
+        if (micToggle) micToggle.classList.remove('active');
+        if (speakingToggle) speakingToggle.classList.remove('active');
+        
+        announceToScreenReader('All audio stopped');
+    });
+} else console.debug('stopToggle not found');
 
 // Speaking toggle
-speakingToggle.addEventListener('click', () => {
-    isSpeakingActive = !isSpeakingActive;
-    speakingToggle.classList.toggle('active');
-    
-    if (isSpeakingActive) {
-        // Start speaking mode
-        const textToSpeak = document.body.textContent;
-        window.speechSynthesis.cancel();
-        const speech = new SpeechSynthesisUtterance(textToSpeak);
-        speech.rate = 0.9;
-        speech.pitch = 1;
-        window.speechSynthesis.speak(speech);
-        announceToScreenReader('Speaking mode activated');
-    } else {
-        // Stop speaking mode
-        window.speechSynthesis.cancel();
-        announceToScreenReader('Speaking mode deactivated');
-    }
-}); 
+if (speakingToggle) {
+    speakingToggle.addEventListener('click', () => {
+        isSpeakingActive = !isSpeakingActive;
+        speakingToggle.classList.toggle('active');
+        
+        if (isSpeakingActive) {
+            // Start speaking mode
+            const textToSpeak = document.body.textContent;
+            window.speechSynthesis.cancel();
+            const speech = new SpeechSynthesisUtterance(textToSpeak);
+            speech.rate = 0.9;
+            speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+            announceToScreenReader('Speaking mode activated');
+        } else {
+            // Stop speaking mode
+            window.speechSynthesis.cancel();
+            announceToScreenReader('Speaking mode deactivated');
+        }
+    });
+} else console.debug('speakingToggle not found');

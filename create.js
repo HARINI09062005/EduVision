@@ -1,49 +1,25 @@
 // Create Page Functionality
 console.log('Create.js script loaded');
 
-// DOM Elements
-const searchInput = document.getElementById('search-input');
-const voiceSearchBtn = document.getElementById('voice-search');
-const uploadBtn = document.getElementById('upload-btn');
-const fileUpload = document.getElementById('file-upload');
-const createBtn = document.getElementById('create-btn');
-const documentsList = document.querySelector('.documents-list');
+// DOM Elements (will be assigned when DOM is ready)
+let searchInput;
+let voiceSearchBtn;
+let uploadBtn;
+let fileUpload;
+let createBtn;
+// documentsList removed (Recent Documents UI removed)
 
-console.log('DOM elements selected:', {
-    searchInput: searchInput,
-    voiceSearchBtn: voiceSearchBtn,
-    uploadBtn: uploadBtn,
-    fileUpload: fileUpload,
-    createBtn: createBtn,
-    documentsList: documentsList
-});
+// Accessibility Controls (assigned on init) - use distinct names to avoid global conflicts
+let createMicToggle;
+let createStopToggle;
+let createSpeakingToggle;
 
-// Accessibility Controls
-const micToggle = document.getElementById('mic-toggle');
-const stopToggle = document.getElementById('stop-toggle');
-const speakingToggle = document.getElementById('speaking-toggle');
+// Do not redeclare `isMicActive` or `isSpeakingActive` here — they are declared in `script.js`.
+// Use the globals if present.
+// Reference to a window opened synchronously on upload click to avoid popup blockers
+let pendingViewerWindow = null;
 
-let isMicActive = false;
-let isSpeakingActive = false;
-
-// Sample recent documents data (would be fetched from server in a real app)
-const recentDocuments = [
-    { id: 1, name: 'Braille Keyboard User Guide.docx', date: '2023-06-15 14:30' },
-    { id: 2, name: 'Accessibility Features Overview.txt', date: '2023-06-14 09:15' },
-    { id: 3, name: 'Voice Commands Reference.pdf', date: '2023-06-12 16:45' },
-    { id: 4, name: 'Keyboard Layout Diagram.pdf', date: '2023-06-10 11:20' },
-    { id: 5, name: 'Braille Training Exercises.docx', date: '2023-06-08 13:40' },
-    { id: 6, name: 'User Feedback Summary.txt', date: '2023-06-05 10:30' },
-    { id: 7, name: 'Product Specifications.pdf', date: '2023-06-03 15:20' },
-    { id: 8, name: 'Installation Guide.docx', date: '2023-06-01 09:45' },
-    { id: 9, name: 'Troubleshooting Manual.pdf', date: '2023-05-28 11:30' },
-    { id: 10, name: 'Keyboard Shortcuts Reference.txt', date: '2023-05-25 14:20' },
-    { id: 11, name: 'Braille Patterns Guide.pdf', date: '2023-05-22 16:15' },
-    { id: 12, name: 'Accessibility Standards.docx', date: '2023-05-20 10:45' },
-    { id: 13, name: 'User Testimonials.txt', date: '2023-05-18 13:30' },
-    { id: 14, name: 'Product Roadmap.pdf', date: '2023-05-15 15:20' },
-    { id: 15, name: 'Marketing Materials.pptx', date: '2023-05-12 09:10' }
-];
+// recentDocuments removed — list UI removed from Create page
 
 // Function to announce messages to screen readers
 function announceToScreenReader(message) {
@@ -69,19 +45,28 @@ function announceToScreenReader(message) {
 // Initialize the page
 function initCreatePage() {
     console.log('Initializing Create page');
-    
-    // Render recent documents
-    renderRecentDocuments();
-    
+    // Assign DOM elements now that DOM is loaded
+    searchInput = document.getElementById('search-input');
+    voiceSearchBtn = document.getElementById('voice-search');
+    uploadBtn = document.getElementById('upload-btn');
+    fileUpload = document.getElementById('file-upload');
+    createBtn = document.getElementById('create-btn');
+
+    createMicToggle = document.getElementById('mic-toggle');
+    createStopToggle = document.getElementById('stop-toggle');
+    createSpeakingToggle = document.getElementById('speaking-toggle');
+
+    // Recent documents UI removed; nothing to render here
+
     // Set up event listeners
     setupEventListeners();
-    
+
     // Set up keyboard shortcuts
     setupKeyboardShortcuts();
-    
+
     // Set up accessibility controls
     setupAccessibilityControls();
-    
+
     // Announce to screen reader
     announceToScreenReader('Create page initialized with all accessibility controls');
 }
@@ -89,58 +74,65 @@ function initCreatePage() {
 // Set up accessibility controls
 function setupAccessibilityControls() {
     // Microphone toggle
-    micToggle.addEventListener('click', () => {
-        isMicActive = !isMicActive;
-        micToggle.classList.toggle('active');
-        
-        if (isMicActive) {
-            // Start microphone
-            if ('webkitSpeechRecognition' in window) {
-                const recognition = new webkitSpeechRecognition();
-                recognition.continuous = true;
-                recognition.interimResults = true;
-                
-                recognition.onresult = (event) => {
-                    const transcript = Array.from(event.results)
-                        .map(result => result[0].transcript)
-                        .join('');
-                    
-                    // Handle voice commands
-                    if (transcript.toLowerCase().includes('read page')) {
-                        window.speechSynthesis.speak(document.body.textContent);
-                    } else if (transcript.toLowerCase().includes('stop')) {
-                        stopToggle.click();
-                    } else if (transcript.toLowerCase().includes('speaking mode')) {
-                        speakingToggle.click();
-                    } else if (transcript.toLowerCase().includes('upload file')) {
-                        fileUpload.click();
-                    } else if (transcript.toLowerCase().includes('new file')) {
-                        createNewDocument();
-                    } else if (transcript.toLowerCase().includes('search for')) {
-                        const searchTerm = transcript.toLowerCase().replace('search for', '').trim();
-                        searchInput.value = searchTerm;
-                        handleSearch({ target: { value: searchTerm } });
-                    } else if (transcript.toLowerCase().includes('go to home')) {
-                        window.location.href = 'index.html';
-                    }
-                };
-                
-                recognition.start();
-                announceToScreenReader('Microphone activated');
+    if (createMicToggle) {
+        createMicToggle.addEventListener('click', () => {
+            // Toggle global state (declared in script.js)
+            if (typeof isMicActive === 'undefined') window.isMicActive = false;
+            if (typeof isSpeakingActive === 'undefined') window.isSpeakingActive = false;
+
+            window.isMicActive = !window.isMicActive;
+            createMicToggle.classList.toggle('active');
+
+            if (window.isMicActive) {
+                // Start microphone
+                if ('webkitSpeechRecognition' in window) {
+                    const recognition = new webkitSpeechRecognition();
+                    recognition.continuous = true;
+                    recognition.interimResults = true;
+
+                    recognition.onresult = (event) => {
+                        const transcript = Array.from(event.results)
+                            .map(result => result[0].transcript)
+                            .join('');
+
+                        // Handle voice commands
+                        if (transcript.toLowerCase().includes('read page')) {
+                            window.speechSynthesis.speak(document.body.textContent);
+                        } else if (transcript.toLowerCase().includes('stop')) {
+                            if (createStopToggle) createStopToggle.click();
+                        } else if (transcript.toLowerCase().includes('speaking mode')) {
+                            if (createSpeakingToggle) createSpeakingToggle.click();
+                        } else if (transcript.toLowerCase().includes('upload file')) {
+                            if (fileUpload) fileUpload.click();
+                        } else if (transcript.toLowerCase().includes('new file')) {
+                            createNewDocument();
+                        } else if (transcript.toLowerCase().includes('search for')) {
+                            const searchTerm = transcript.toLowerCase().replace('search for', '').trim();
+                            if (searchInput) searchInput.value = searchTerm;
+                            handleSearch({ target: { value: searchTerm } });
+                        } else if (transcript.toLowerCase().includes('go to home')) {
+                            window.location.href = 'index.html';
+                        }
+                    };
+
+                    recognition.start();
+                    announceToScreenReader('Microphone activated');
+                } else {
+                    announceToScreenReader('Speech recognition not supported in this browser');
+                }
             } else {
-                announceToScreenReader('Speech recognition not supported in this browser');
+                // Stop microphone
+                if (window.webkitSpeechRecognition) {
+                    window.webkitSpeechRecognition().stop();
+                }
+                announceToScreenReader('Microphone deactivated');
             }
-        } else {
-            // Stop microphone
-            if (window.webkitSpeechRecognition) {
-                window.webkitSpeechRecognition().stop();
-            }
-            announceToScreenReader('Microphone deactivated');
-        }
-    });
+        });
+    } else console.warn('createMicToggle not found');
 
     // Stop toggle
-    stopToggle.addEventListener('click', () => {
+    if (createStopToggle) {
+        createStopToggle.addEventListener('click', () => {
         // Stop all audio
         window.speechSynthesis.cancel();
         if (window.webkitSpeechRecognition) {
@@ -148,227 +140,100 @@ function setupAccessibilityControls() {
         }
         
         // Reset all states
-        isMicActive = false;
-        isSpeakingActive = false;
-        micToggle.classList.remove('active');
-        speakingToggle.classList.remove('active');
+        window.isMicActive = false;
+        window.isSpeakingActive = false;
+        if (createMicToggle) createMicToggle.classList.remove('active');
+        if (createSpeakingToggle) createSpeakingToggle.classList.remove('active');
         
         announceToScreenReader('All audio stopped');
     });
+    } else console.warn('createStopToggle not found');
 
     // Speaking toggle
-    speakingToggle.addEventListener('click', () => {
-        isSpeakingActive = !isSpeakingActive;
-        speakingToggle.classList.toggle('active');
-        
-        if (isSpeakingActive) {
-            // Start speaking mode
-            const textToSpeak = document.body.textContent;
-            window.speechSynthesis.cancel();
-            const speech = new SpeechSynthesisUtterance(textToSpeak);
-            speech.rate = 0.9;
-            speech.pitch = 1;
-            window.speechSynthesis.speak(speech);
-            announceToScreenReader('Speaking mode activated');
-        } else {
-            // Stop speaking mode
-            window.speechSynthesis.cancel();
-            announceToScreenReader('Speaking mode deactivated');
-        }
-    });
+    if (createSpeakingToggle) {
+        createSpeakingToggle.addEventListener('click', () => {
+            if (typeof isSpeakingActive === 'undefined') window.isSpeakingActive = false;
+            window.isSpeakingActive = !window.isSpeakingActive;
+            createSpeakingToggle.classList.toggle('active');
+
+            if (window.isSpeakingActive) {
+                const textToSpeak = document.body.textContent;
+                window.speechSynthesis.cancel();
+                const speech = new SpeechSynthesisUtterance(textToSpeak);
+                speech.rate = 0.9;
+                speech.pitch = 1;
+                window.speechSynthesis.speak(speech);
+                announceToScreenReader('Speaking mode activated');
+            } else {
+                window.speechSynthesis.cancel();
+                announceToScreenReader('Speaking mode deactivated');
+            }
+        });
+    } else console.warn('createSpeakingToggle not found');
 }
 
 // Render recent documents
 function renderRecentDocuments() {
-    console.log('Rendering recent documents');
-    console.log('Documents list element:', documentsList);
-    console.log('Number of documents:', recentDocuments.length);
-    
-    documentsList.innerHTML = '';
-    
-    if (recentDocuments.length === 0) {
-        console.log('No documents found');
-        const noDocs = document.createElement('div');
-        noDocs.className = 'document-item';
-        noDocs.textContent = 'No documents found';
-        noDocs.setAttribute('role', 'status');
-        documentsList.appendChild(noDocs);
-        return;
-    }
-    
-    recentDocuments.forEach(doc => {
-        console.log('Creating document item for:', doc.name);
-        const docItem = document.createElement('div');
-        docItem.className = 'document-item';
-        docItem.setAttribute('role', 'listitem');
-        docItem.setAttribute('tabindex', '0');
-        docItem.setAttribute('aria-label', `${doc.name}, last opened ${doc.date}`);
-        
-        // Get file extension to determine icon
-        const fileExt = doc.name.split('.').pop().toLowerCase();
-        let fileIcon = '📄'; // Default icon
-        
-        // Set appropriate icon based on file extension
-        if (fileExt === 'pdf') {
-            fileIcon = '📕';
-        } else if (fileExt === 'docx' || fileExt === 'doc') {
-            fileIcon = '📘';
-        } else if (fileExt === 'txt') {
-            fileIcon = '📝';
-        } else if (fileExt === 'xlsx' || fileExt === 'xls') {
-            fileIcon = '📊';
-        } else if (fileExt === 'pptx' || fileExt === 'ppt') {
-            fileIcon = '📑';
-        }
-        
-        docItem.innerHTML = `
-            <div class="document-info">
-                <div class="document-name">
-                    <span style="font-size: 1.5rem; margin-right: 10px;">${fileIcon}</span>
-                    ${doc.name}
-                </div>
-                <div class="document-date">Last opened: ${doc.date}</div>
-            </div>
-            <div class="document-actions">
-                <button class="document-action-btn" aria-label="Open ${doc.name}">
-                    <span class="icon">📄</span>
-                </button>
-                <button class="document-action-btn" aria-label="Share ${doc.name}">
-                    <span class="icon">📤</span>
-                </button>
-                <button class="document-action-btn" aria-label="Delete ${doc.name}">
-                    <span class="icon">🗑️</span>
-                </button>
-            </div>
-        `;
-        
-        // Add keyboard navigation
-        docItem.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openDocument(doc.id);
-            }
-        });
-        
-        documentsList.appendChild(docItem);
-    });
-    
-    console.log('Finished rendering documents');
+    // renderRecentDocuments removed — Recent Documents UI no longer exists on this page
 }
 
 // Set up event listeners
 function setupEventListeners() {
     // Search input
-    searchInput.addEventListener('input', handleSearch);
-    
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
+    } else console.warn('searchInput not found');
+
     // Voice search
-    voiceSearchBtn.addEventListener('click', activateVoiceSearch);
-    
+    if (voiceSearchBtn) {
+        voiceSearchBtn.addEventListener('click', activateVoiceSearch);
+    } else console.warn('voiceSearchBtn not found');
+
     // File upload
-    uploadBtn.addEventListener('click', () => {
-        fileUpload.click();
-    });
-    
-    fileUpload.addEventListener('change', handleFileUpload);
-    
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', () => {
+            // Open a blank window synchronously to avoid popup blockers when we later navigate to the viewer
+            try {
+                pendingViewerWindow = window.open('', '_blank');
+                if (pendingViewerWindow) {
+                    // Write a temporary loading message
+                    pendingViewerWindow.document.write('<!doctype html><html><head><title>Loading...</title></head><body><p>Preparing document viewer...</p></body></html>');
+                }
+            } catch (err) {
+                console.warn('Could not open viewer window synchronously', err);
+                pendingViewerWindow = null;
+            }
+
+            if (fileUpload) {
+                fileUpload.click();
+            } else {
+                console.warn('fileUpload input not found');
+            }
+        });
+    } else console.warn('uploadBtn not found');
+
+    if (fileUpload) {
+        fileUpload.addEventListener('change', handleFileUpload);
+    }
+
     // Create new document
-    createBtn.addEventListener('click', createNewDocument);
+    if (createBtn) {
+        createBtn.addEventListener('click', createNewDocument);
+    } else console.warn('createBtn not found');
     
-    // Document actions
-    documentsList.addEventListener('click', (e) => {
-        const actionBtn = e.target.closest('.document-action-btn');
-        if (!actionBtn) return;
-        
-        const docItem = actionBtn.closest('.document-item');
-        const docName = docItem.querySelector('.document-name').textContent;
-        
-        if (actionBtn.getAttribute('aria-label').includes('Open')) {
-            openDocument(docName);
-        } else if (actionBtn.getAttribute('aria-label').includes('Share')) {
-            shareDocument(docName);
-        } else if (actionBtn.getAttribute('aria-label').includes('Delete')) {
-            deleteDocument(docName);
-        }
-    });
+    // No document list on this page any more.
 }
 
 // Handle search
 function handleSearch(e) {
     const searchTerm = e.target.value.toLowerCase();
-    
-    // Filter documents
-    const filteredDocs = recentDocuments.filter(doc => 
-        doc.name.toLowerCase().includes(searchTerm)
-    );
-    
-    // Update UI with filtered results
-    renderFilteredDocuments(filteredDocs);
-    
-    // Announce to screen reader
-    announceToScreenReader(`Searching for ${searchTerm}`);
+    // Recent documents removed: there's no document list to filter.
+    // We keep accessibility feedback so the user knows their query was captured.
+    announceToScreenReader(`Search query received: ${searchTerm}.`);
 }
 
 // Render filtered documents
-function renderFilteredDocuments(filteredDocs) {
-    documentsList.innerHTML = '';
-    
-    if (filteredDocs.length === 0) {
-        const noResults = document.createElement('div');
-        noResults.className = 'document-item';
-        noResults.textContent = 'No documents found';
-        noResults.setAttribute('role', 'status');
-        documentsList.appendChild(noResults);
-        return;
-    }
-    
-    filteredDocs.forEach(doc => {
-        const docItem = document.createElement('div');
-        docItem.className = 'document-item';
-        docItem.setAttribute('role', 'listitem');
-        docItem.setAttribute('tabindex', '0');
-        docItem.setAttribute('aria-label', `${doc.name}, last opened ${doc.date}`);
-        
-        // Get file extension to determine icon
-        const fileExt = doc.name.split('.').pop().toLowerCase();
-        let fileIcon = '📄'; // Default icon
-        
-        // Set appropriate icon based on file extension
-        if (fileExt === 'pdf') {
-            fileIcon = '📕';
-        } else if (fileExt === 'docx' || fileExt === 'doc') {
-            fileIcon = '📘';
-        } else if (fileExt === 'txt') {
-            fileIcon = '📝';
-        } else if (fileExt === 'xlsx' || fileExt === 'xls') {
-            fileIcon = '📊';
-        } else if (fileExt === 'pptx' || fileExt === 'ppt') {
-            fileIcon = '📑';
-        }
-        
-        docItem.innerHTML = `
-            <div class="document-info">
-                <div class="document-name">
-                    <span style="font-size: 1.5rem; margin-right: 10px;">${fileIcon}</span>
-                    ${doc.name}
-                </div>
-                <div class="document-date">Last opened: ${doc.date}</div>
-            </div>
-            <div class="document-actions">
-                <button class="document-action-btn" aria-label="Open ${doc.name}">
-                    <span class="icon">📄</span>
-                </button>
-                <button class="document-action-btn" aria-label="Share ${doc.name}">
-                    <span class="icon">📤</span>
-                </button>
-                <button class="document-action-btn" aria-label="Delete ${doc.name}">
-                    <span class="icon">🗑️</span>
-                </button>
-            </div>
-        `;
-        
-        documentsList.appendChild(docItem);
-    });
-}
+// renderFilteredDocuments removed — no documents list to render
 
 // Activate voice search
 function activateVoiceSearch() {
@@ -406,34 +271,62 @@ function handleFileUpload(e) {
     
     const file = files[0];
     
-    // In a real app, this would upload the file to a server
-    // For now, we'll just add it to our recent documents
-    const newDoc = {
-        id: recentDocuments.length + 1,
-        name: file.name,
-        date: new Date().toLocaleString()
-    };
-    
-    recentDocuments.unshift(newDoc);
-    renderRecentDocuments();
-    
-    announceToScreenReader(`File ${file.name} uploaded successfully`);
+    // In a real app, this would upload the file to a server.
+    // We no longer maintain a Recent Documents list on this page; proceed to viewer.
+
+    // Determine file type and try to read text content when possible
+    const nameLower = file.name.toLowerCase();
+    const ext = nameLower.split('.').pop();
+
+    // Helper to store doc in localStorage and open viewer
+    function openInViewer(name, content, fileUrl) {
+        const key = `eduvision_doc_${Date.now()}`;
+        const payload = { name, content: content || null, fileUrl: fileUrl || null };
+        try {
+            localStorage.setItem(key, JSON.stringify(payload));
+            // Open viewer in new tab and pass the storage key
+            if (pendingViewerWindow && !pendingViewerWindow.closed) {
+                try {
+                    pendingViewerWindow.location = `view.html?docKey=${encodeURIComponent(key)}`;
+                    pendingViewerWindow.focus();
+                    pendingViewerWindow = null;
+                } catch (err) {
+                    // If navigation fails, fallback to opening a new window
+                    window.open(`view.html?docKey=${encodeURIComponent(key)}`, '_blank');
+                }
+            } else {
+                window.open(`view.html?docKey=${encodeURIComponent(key)}`, '_blank');
+                pendingViewerWindow = null;
+            }
+        } catch (err) {
+            console.error('Failed to save document for viewing', err);
+            announceToScreenReader('Unable to open document in viewer');
+        }
+    }
+
+    if (file.type.startsWith('text') || ext === 'txt' || ext === 'md' || ext === 'csv') {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const text = ev.target.result;
+            announceToScreenReader(`File ${file.name} uploaded and opening in viewer`);
+            openInViewer(file.name, text, null);
+        };
+        reader.onerror = () => {
+            announceToScreenReader('Failed to read file');
+        };
+        reader.readAsText(file);
+    } else {
+        // For non-text files we provide a downloadable blob URL and open the viewer with a notice
+        const blobUrl = URL.createObjectURL(file);
+        announceToScreenReader(`File ${file.name} uploaded. Preview not available for this file type. Opening viewer with download link.`);
+        openInViewer(file.name, null, blobUrl);
+    }
 }
 
 // Create new document
 function createNewDocument() {
-    // In a real app, this would open a document editor
-    // For now, we'll just create a sample document
-    const newDoc = {
-        id: recentDocuments.length + 1,
-        name: 'New Document.txt',
-        date: new Date().toLocaleString()
-    };
-    
-    recentDocuments.unshift(newDoc);
-    renderRecentDocuments();
-    
-    announceToScreenReader('New document created');
+    // In a real app, this would open a document editor. For now, announce the action.
+    announceToScreenReader('Create new document requested');
 }
 
 // Open document
@@ -450,14 +343,8 @@ function shareDocument(docName) {
 
 // Delete document
 function deleteDocument(docName) {
-    // In a real app, this would delete the document from the server
-    // For now, we'll just remove it from our list
-    const index = recentDocuments.findIndex(doc => doc.name === docName);
-    if (index !== -1) {
-        recentDocuments.splice(index, 1);
-        renderRecentDocuments();
-        announceToScreenReader(`Document ${docName} deleted`);
-    }
+    // Recent documents removed — delete is a no-op here. Announce for accessibility.
+    announceToScreenReader(`Delete requested for ${docName}. Document list has been removed.`);
 }
 
 // Set up keyboard shortcuts
@@ -484,19 +371,19 @@ function setupKeyboardShortcuts() {
         // Alt + M - Toggle microphone
         if (e.altKey && e.key === 'm') {
             e.preventDefault();
-            micToggle.click();
+            if (createMicToggle) createMicToggle.click();
         }
         
         // Alt + P - Toggle speaking mode
         if (e.altKey && e.key === 'p') {
             e.preventDefault();
-            speakingToggle.click();
+            if (createSpeakingToggle) createSpeakingToggle.click();
         }
         
         // Alt + X - Stop all audio
         if (e.altKey && e.key === 'x') {
             e.preventDefault();
-            stopToggle.click();
+            if (createStopToggle) createStopToggle.click();
         }
         
         // Alt + H - Go to home page
